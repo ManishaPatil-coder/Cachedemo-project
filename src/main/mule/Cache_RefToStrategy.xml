@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:os="http://www.mulesoft.org/schema/mule/os" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/current/mule-os.xsd">
+	
+	<flow name="Cachedemo_RefToStrategyFlow" doc:id="27079bb4-9824-4667-9047-cdd367d7e41e" >
+		<http:listener doc:name="Listener" doc:id="a275472c-2c45-4ebe-bb47-a12f6fd3a6e7" path="/cachereftostrategy" config-ref="HTTP_Listener_config">
+		</http:listener>
+		<logger level="INFO" doc:name="Logger" doc:id="e113bf37-f054-473a-a406-74f028dbe486" message="Flow Start : Request Received"/>
+		<ee:cache doc:name="Cache" doc:id="584c6c30-560c-4622-ae22-7ef54957885d" cachingStrategy-ref="Caching_Strategy">
+			<logger level="INFO" doc:name="Logger" doc:id="6bc795a8-0333-454e-9af5-39523eda057a" message="Cache scope begin"/>
+			<ee:transform doc:name="Transform Message" doc:id="0a82817f-4fca-4d84-a603-b02b391b61d1">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"Message": if (attributes.queryParams.role == "mentor") "MuleSoft Mentor" else "MuleSoft leader"
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+			<logger level="INFO" doc:name="Logger" doc:id="610fe7c1-2daa-4ea1-a443-82e193f26541" message="Cache scope end"/>
+		</ee:cache>
+		<logger level="INFO" doc:name="Logger" doc:id="f9c01458-31e9-4e57-a1e0-9a4cc12359a2" message="Flow End : Request processed"/>
+	</flow>
+</mule>
