@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:os="http://www.mulesoft.org/schema/mule/os"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd 
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/current/mule-os.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="9d661a38-56ce-4493-a976-c75bdd407621" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<ee:object-store-caching-strategy name="Caching_Strategy" doc:name="Caching Strategy" doc:id="c8b27fdf-8862-46ce-8ef9-f7e55ed54613" keyGenerationExpression="#[attributes.queryParams.role]"/>
+	<ee:object-store-caching-strategy name="Caching_Strategy_ObjectStore" doc:name="Caching Strategy" doc:id="0d47fd6b-472b-4146-8853-e82430fa2f5b" keyGenerationExpression="#[attributes.queryParams.role]" >
+		<os:private-object-store alias="cache" maxEntries="10" entryTtl="10" expirationInterval="5" />
+	</ee:object-store-caching-strategy>
+	</mule>
